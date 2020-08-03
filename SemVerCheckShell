@@ -1,0 +1,7 @@
+                    def version = targetVersion
+
+                    def ifSemVersion = sh(returnStdout: true, script:" [[ ${version} =~ ^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?(\\+[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?\$ ]] && echo true || echo false ")
+                    if (ifSemVersion.toString().trim()== 'false') {
+                        currentBuild.result = 'ABORTED'
+                        error('Entered Revision is not semantic')
+                    }
