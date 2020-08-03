@@ -1,0 +1,9 @@
+                    //to get lastest tag from all branches
+                    def Tag = sh(script: 'git describe --tags $(git rev-list --tags --max-count=1)', returnStdout: true).trim()
+                    
+                    def Version = this.targetVersion + "-" + Tag + "-" + currentBuild.number
+                    def semVerRE = "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?\$".bitwiseNegate()
+                    def semVerMatcher = semVerRE.matcher(Version)
+                    if (!semVerMatcher.matches()) {
+                       error('version is not symantic')
+                    }
